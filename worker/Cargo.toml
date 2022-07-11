@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "walrus",
+    "realtime",
+    "stream_logical",
+]
