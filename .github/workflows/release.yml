@@ -1,4 +1,4 @@
-me: release
+name: release
 on:
   push:
     # Enable when testing release infrastructure on a branch.
