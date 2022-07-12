@@ -77,6 +77,7 @@ jobs:
         sudo apt-get install -y --no-install-recommends \
           gcc-arm-linux-gnueabihf \
           musl-tools \
+          gcc-multilib \
           pkg-config \
           libssl-dev
 
