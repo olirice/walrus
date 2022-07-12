@@ -66,6 +66,24 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: Install packages (Ubuntu)
+      if: matrix.os == 'ubuntu-18.04'
+      run: |
+        if ! command -V sudo; then
+          apt-get update
+          apt-get install -y --no-install-recommends sudo
+        fi
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          gcc-arm-linux-gnueabihf \
+          pkg-config \
+          libssl-dev
+
+    - name: Install packages (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install openssl
+
     - name: Install Rust
       uses: actions-rs/toolchain@v1
       with:
