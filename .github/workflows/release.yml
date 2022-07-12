@@ -69,12 +69,14 @@ jobs:
     - name: Install packages (Ubuntu)
       if: matrix.os == 'ubuntu-18.04'
       run: |
-        apt-get update
-        apt-get install -y --no-install-recommends sudo
+        if ! command -V sudo; then
+          apt-get update
+          apt-get install -y --no-install-recommends sudo
+        fi
         sudo apt-get update
         sudo apt-get install -y --no-install-recommends \
           gcc-arm-linux-gnueabihf \ # for building openssl on ARM
-          musl-tools \ # for building openssl on x86_64
+          musl-tools \ # for building openssl on x86_64ARM
           pkg-config \
           libssl-dev
 
