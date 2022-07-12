@@ -51,7 +51,10 @@ jobs:
           os: ubuntu-18.04
           rust: nightly
           target: x86_64-unknown-linux-musl
-        
+        - build: linux-arm
+          os: ubuntu-18.04
+          rust: nightly
+          target: arm-unknown-linux-gnueabihf
         - build: macos
           os: macos-latest
           rust: nightly
@@ -78,10 +81,11 @@ jobs:
         sudo apt-get install -y libssl-dev
 
     - name: Install packages (Ubuntu ARM)
-      if: matrix.target == 'gcc-arm-linux-gnueabihf qemu-user'
+      if: matrix.target == 'arm-unknown-linux-gnueabihf'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libssl-dev
+        sudo apt-get install -y gcc-arm-linux-gnueabihf qemu-user
+        sudo apt-get remove -y libssl-dev
 
     - name: Install packages (macOS)
       if: matrix.os == 'macos-latest'
