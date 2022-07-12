@@ -41,9 +41,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       CARGO: cargo
-      TARGET_FLAGS: ""
-      # When CARGO is set to CROSS, TARGET_DIR includes matrix.target.
-      TARGET_DIR: ./target
       # Emit backtraces on panics.
       RUST_BACKTRACE: 1
     strategy:
@@ -97,11 +94,9 @@ jobs:
     - name: Show command used for Cargo
       run: |
         echo "cargo command is: ${{ env.CARGO }}"
-        echo "target flag is: ${{ env.TARGET_FLAGS }}"
-        echo "target dir is: ${{ env.TARGET_DIR }}"
 
     - name: Build release binary
-      run: ${{ env.CARGO }} build --manifest-path=worker/Cargo.toml --verbose --release ${{ env.TARGET_FLAGS }}
+      run: ${{ env.CARGO }} build --manifest-path=worker/Cargo.toml --verbose --release --target ${{ matrix.target }}
 
     - name: Build archive
       shell: bash
