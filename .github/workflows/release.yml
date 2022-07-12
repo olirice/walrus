@@ -107,8 +107,9 @@ jobs:
       shell: bash
       run: |
         staging="walrus-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
-        mkdir -p "$staging"/{complete,doc}
-        cp {README.md} "$staging/"
+        mkdir "$staging"
+        ls
+        #cp {README.md} "$staging/"
         # cp {CHANGELOG.md,FAQ.md,GUIDE.md} "$staging/doc/"
         cp "worker/target/${{ matrix.target }}/release/walrus" "$staging/"
         cp "worker/target/${{ matrix.target }}/release/realtime" "$staging/"
