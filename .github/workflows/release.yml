@@ -110,10 +110,8 @@ jobs:
         mkdir "$staging"
         ls
         ls "worker/target/"
-        ls "worker/target/${{ matrix.target }}"
-        ls "worker/target/${{ matrix.target }}/release"
-
-        cp "worker/target/${{ matrix.target }}/release/realtime" "$staging/"
+        ls "worker/target/release"
+        cp "worker/target/release/realtime" "$staging/"
         tar czf "$staging.tar.gz" "$staging"
         echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
     - name: Upload release archive
