@@ -51,10 +51,7 @@ jobs:
           os: ubuntu-18.04
           rust: nightly
           target: x86_64-unknown-linux-musl
-        - build: linux-arm
-          os: ubuntu-18.04
-          rust: nightly
-          target: arm-unknown-linux-gnueabihf
+        
         - build: macos
           os: macos-latest
           rust: nightly
@@ -66,7 +63,7 @@ jobs:
       with:
         fetch-depth: 1
 
-    - name: Install packages (Ubuntu)
+    - name: Install sudo (Ubuntu)
       if: matrix.os == 'ubuntu-18.04'
       run: |
         if ! command -V sudo; then
@@ -74,19 +71,17 @@ jobs:
           apt-get install -y --no-install-recommends sudo
         fi
 
-        case "${{ matrix.target }}" in
-          "x86_64-unknown-linux-gnu")
-          exit 0
-          ;;
-          "i686-unknown-linux-gnu")
-          packages="gcc-multilib"
-          ;;
-          "arm-unknown-linux-gnueabihf")
-          packages="gcc-arm-linux-gnueabihf qemu-user"
-          ;;
-        esac
+    - name: Install packages (Ubuntu x64)
+      if: matrix.target == 'x86_64-unknown-linux-musl'
+      run: |
         sudo apt-get update
-        sudo apt-get install -y $packages
+        sudo apt-get install -y libssl-dev
+
+    - name: Install packages (Ubuntu ARM)
+      if: matrix.target == 'gcc-arm-linux-gnueabihf qemu-user'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libssl-dev
 
     - name: Install packages (macOS)
       if: matrix.os == 'macos-latest'
