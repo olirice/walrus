@@ -73,13 +73,20 @@ jobs:
           apt-get update
           apt-get install -y --no-install-recommends sudo
         fi
-        sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
-          gcc-arm-linux-gnueabihf \
-          musl-tools \
-          gcc-multilib \
-          pkg-config \
-          libssl-dev
+
+		case "${{ matrix.target }}" in
+		"x86_64-unknown-linux-gnu")
+		  exit 0
+		  ;;
+		"i686-unknown-linux-gnu")
+		  packages="gcc-multilib"
+		  ;;
+		"arm-unknown-linux-gnueabihf")
+		  packages="gcc-arm-linux-gnueabihf qemu-user"
+		  ;;
+		esac
+		sudo apt-get update
+		sudo apt-get install -y $packages
 
     - name: Install packages (macOS)
       if: matrix.os == 'macos-latest'
