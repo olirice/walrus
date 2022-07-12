@@ -109,9 +109,10 @@ jobs:
         staging="walrus-${{ needs.create-release.outputs.release_version }}-${{ matrix.target }}"
         mkdir "$staging"
         ls
-        #cp {README.md} "$staging/"
-        # cp {CHANGELOG.md,FAQ.md,GUIDE.md} "$staging/doc/"
-        cp "worker/target/${{ matrix.target }}/release/walrus" "$staging/"
+        ls "worker/target/"
+        ls "worker/target/${{ matrix.target }}"
+        ls "worker/target/${{ matrix.target }}/release"
+
         cp "worker/target/${{ matrix.target }}/release/realtime" "$staging/"
         tar czf "$staging.tar.gz" "$staging"
         echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
