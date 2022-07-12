@@ -75,7 +75,8 @@ jobs:
         fi
         sudo apt-get update
         sudo apt-get install -y --no-install-recommends \
-          gcc-arm-linux-gnueabihf \
+          gcc-arm-linux-gnueabihf \ # for building openssl on ARM
+          musl-tools \ # for building openssl on x86_64
           pkg-config \
           libssl-dev
 
