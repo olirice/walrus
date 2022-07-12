@@ -68,17 +68,6 @@ jobs:
           rust: nightly
           target: x86_64-apple-darwin
         - build: win-msvc
-          os: windows-2019
-          rust: nightly
-          target: x86_64-pc-windows-msvc
-        - build: win-gnu
-          os: windows-2019
-          rust: nightly-x86_64-gnu
-          target: x86_64-pc-windows-gnu
-        - build: win32-msvc
-          os: windows-2019
-          rust: nightly
-          target: i686-pc-windows-msvc
 
     steps:
     - name: Checkout repository
@@ -141,6 +130,7 @@ jobs:
           rustembedded/cross:arm-unknown-linux-gnueabihf \
           arm-linux-gnueabihf-strip \
           /target/arm-unknown-linux-gnueabihf/release/rg
+
     - name: Build archive
       shell: bash
       run: |
@@ -151,17 +141,11 @@ jobs:
         cp {CHANGELOG.md,FAQ.md,GUIDE.md} "$staging/doc/"
         cp "$outdir"/{rg.bash,rg.fish,_rg.ps1} "$staging/complete/"
         cp complete/_rg "$staging/complete/"
-        if [ "${{ matrix.os }}" = "windows-2019" ]; then
-          cp "target/${{ matrix.target }}/release/rg.exe" "$staging/"
-          7z a "$staging.zip" "$staging"
-          echo "ASSET=$staging.zip" >> $GITHUB_ENV
-        else
-          # The man page is only generated on Unix systems. ¯\_(ツ)_/¯
-          cp "$outdir"/rg.1 "$staging/doc/"
-          cp "target/${{ matrix.target }}/release/rg" "$staging/"
-          tar czf "$staging.tar.gz" "$staging"
-          echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
-        fi
+        # The man page is only generated on Unix systems. ¯\_(ツ)_/¯
+        cp "$outdir"/rg.1 "$staging/doc/"
+        cp "target/${{ matrix.target }}/release/rg" "$staging/"
+        tar czf "$staging.tar.gz" "$staging"
+        echo "ASSET=$staging.tar.gz" >> $GITHUB_ENV
     - name: Upload release archive
       uses: actions/upload-release-asset@v1.0.1
       env:
